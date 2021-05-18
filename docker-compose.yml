@@ -1,4 +1,4 @@
-version: "3.0"
+version: '3.0'
 services:
   jackett:
     image: linuxserver/jackett
@@ -50,31 +50,31 @@ services:
     image: haugene/transmission-openvpn
     container_name: transmission
     volumes:
-        - /mnt/data:/mnt/data
+      - /mnt/data:/mnt/data
     environment:
-        - PUID=1000
-        - PGID=1000
-        - CREATE_TUN_DEVICE=true
-        - OPENVPN_PROVIDER=NORDVPN
-        - NORDVPN_COUNTRY=CA
-        - OPENVPN_USERNAME=username
-        - OPENVPN_PASSWORD=pass
-        - WEBPROXY_ENABLED=false
-        - TRANSMISSION_DOWNLOAD_DIR=/mnt/data/downloads
-        - TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=true
-        - TRANSMISSION_SEED_QUEUE_ENABLED=true
-        - TRANSMISSION_INCOMPLETE_DIR_ENABLED=false
-        - TRANSMISSION_RATIO_LIMIT_ENABLED=true
-        - TRANSMISSION_RATIO_LIMIT=2
-        - LOCAL_NETWORK=192.168.0.0/16
+      - PUID=1000
+      - PGID=1000
+      - CREATE_TUN_DEVICE=true
+      - OPENVPN_PROVIDER=NORDVPN
+      - NORDVPN_COUNTRY=DE
+      - OPENVPN_USERNAME=username
+      - OPENVPN_PASSWORD=pass
+      - WEBPROXY_ENABLED=false
+      - TRANSMISSION_DOWNLOAD_DIR=/mnt/data/downloads
+      - TRANSMISSION_IDLE_SEEDING_LIMIT_ENABLED=true
+      - TRANSMISSION_SEED_QUEUE_ENABLED=true
+      - TRANSMISSION_INCOMPLETE_DIR_ENABLED=false
+      - TRANSMISSION_RATIO_LIMIT_ENABLED=true
+      - TRANSMISSION_RATIO_LIMIT=2
+      - LOCAL_NETWORK=192.168.0.0/16
     cap_add:
-        - NET_ADMIN
+      - NET_ADMIN
     logging:
-        driver: json-file
-        options:
-            max-size: 10m
+      driver: json-file
+      options:
+        max-size: 10m
     ports:
-        - "9091:9091"
+      - '9091:9091'
     restart: unless-stopped
   plex:
     image: linuxserver/plex
@@ -83,7 +83,7 @@ services:
       - /mnt/data/media:/media
       - ./config/plex:/config
     devices:
-      - "/dev/dri:/dev/dri"
+      - '/dev/dri:/dev/dri'
     environment:
       - PUID=1000
       - PGID=1000
