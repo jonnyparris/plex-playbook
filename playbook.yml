@@ -20,14 +20,14 @@
     - name: Add authorized keys
       authorized_key: user=jonnyparris state=present key='{{ item }}'
       with_file:
-        - key.pub
+        - ~/.ssh/*.pub
     - name: Add authorized keys for root
       authorized_key: user=root state=present key='{{ item }}'
       with_file:
-        - key.pub
+        - ~/.ssh/*.pub
     - name: Copy a custom ssh banner
       ansible.builtin.copy:
-        src: ssh_banner.txt
+        src: ./assets/ssh_banner.txt
         dest: /etc/ssh/sshd-banner
         owner: root
         group: root
