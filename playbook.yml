@@ -24,13 +24,11 @@
         key: '{{ item }}'
       with_file:
         - ~/.ssh/*.pub
-    - name: Add authorized keys for root
-      authorized_key:
-        user: root
-        state: present
-        key: '{{ item }}'
-      with_file:
-        - ~/.ssh/*.pub
+    - name: Remove Root SSH Configuration
+      file:
+        path: /root/.ssh
+        state: absent
+      sudo: yes
     - name: Copy a custom ssh banner
       ansible.builtin.copy:
         src: ./assets/ssh_banner.txt
@@ -38,12 +36,14 @@
         owner: root
         group: root
         mode: "0755"
-    - name: Enable custom banner
-      ansible.builtin.lineinfile:
-        path: /etc/ssh/sshd_config
-        firstmatch: yes
-        regexp: "^(.*)Banner"
-        line: Banner /etc/ssh/sshd-banner
+    - name: Copy Secured SSHD Configuration
+      copy:
+        src: sshd_config_secured
+        dest: /etc/ssh/sshd_config
+        owner: root
+        group: root
+        mode: 0644
+      sudo: yes
     - name: Set a hostname
       ansible.builtin.hostname:
         name: duvplex
