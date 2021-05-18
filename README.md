@@ -78,7 +78,7 @@ ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-f
 Create everything
 ``` sh
 cd ~/plex
-# likley problematic one so run it alone to fix it if need be because this container also holds the VPN info
+# likely problematic so run it alone to fix it if need be because this container also holds the VPN info
 docker-compose up transmission
 
 docker-compose up # run all the services we just set up
