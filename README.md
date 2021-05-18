@@ -63,7 +63,6 @@ PASSWORD_7Z: password used when backing up config files
 ``` sh
 ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
 ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
-ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags traktcron
 ```
 
 ## Bring the docker containers up manually now that server is setup
