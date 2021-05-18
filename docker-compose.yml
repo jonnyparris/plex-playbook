@@ -6,7 +6,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Toronto
+      - TZ=Europe/Lisbon
     volumes:
       - ./config/jackett:/config
     ports:
@@ -18,7 +18,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Toronto
+      - TZ=Europe/Lisbon
     volumes:
       - ./config/sonarr:/config
       - /mnt/data:/mnt/data
@@ -35,7 +35,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=America/Toronto
+      - TZ=Europe/Lisbon
     volumes:
       - ./config/radarr:/config
       - /mnt/data:/mnt/data
