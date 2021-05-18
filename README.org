@@ -1,7 +1,7 @@
-* [[file:/ssh:kaipada@192.168.0.10:~/][thaNAS]]
+* [[file:/ssh:kaipada@192.168.0.10:~/][duvplex]]
 
 #+CAPTION: Purple bad guy saying I am inevitable
-#+html: <p align="center"><img src="fluff/MrPurple.gif" /></p>
+#+html: <p align="center"><img src="assets/MrPurple.gif" /></p>
 
 Home NAS / Plex media server setup.
 - Server setup using ansible
@@ -20,7 +20,7 @@ file:./ansible_hosts.conf
 Check inventory after setting up file
 #+begin_src sh
 sudo mkdir /etc/ansible
-sudo ln -s ~/Repos/Notes/thaNAS/ansible_hosts.conf /etc/ansible/hosts
+sudo ln -s ~/Repos/Notes/duvplex/ansible_hosts.conf /etc/ansible/hosts
 ansible-inventory --list -y
 
 # or specify inventory
@@ -44,7 +44,7 @@ file:ansible_vault_password.txt --> vault password
 file:ansible_vault.yml --> Put passwords here
 
 #+begin_src sh
-cd ~/Repos/thaNAS/
+cd ~/Repos/duvplex/
 ansible-vault create ansible_vault.yml
 ansible-vault decrypt --vault-password-file=ansible_vault_password.txt ansible_vault.yml
 ansible-vault encrypt --vault-password-file=ansible_vault_password.txt ansible_vault.yml
@@ -64,9 +64,9 @@ PASSWORD_7Z: password used when backing up config files
 ** Execute the playbook
 
 #+begin_src sh
-ansible-playbook setup_thaNAS_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
-ansible-playbook setup_thaNAS_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
-ansible-playbook setup_thaNAS_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags traktcron
+ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
+ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
+ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags traktcron
 #+end_src
 
 ** Bring the docker containers up manually now that server is setup
@@ -100,7 +100,7 @@ ssh -L32400:localhost:32400 kaipada@192.168.0.10
 
 - Plex         ==> http://localhost:32400/web
 
-See more detailed write up: file:fluff/DetailedWriteUp.md
+See more detailed write up: file:assets/DetailedWriteUp.md
 
 ** Setup dropbox uploader to backup config
 

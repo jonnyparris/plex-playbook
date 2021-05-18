@@ -3,7 +3,7 @@
 ########################################################################
 
 ---
-- hosts: thanas
+- hosts: duvplex
   become: true
   gather_facts: true
   vars_files: ansible_vault.yml
@@ -42,7 +42,7 @@
         line: Banner /etc/ssh/sshd-banner
     - name: Set a hostname
       ansible.builtin.hostname:
-        name: thaNAS
+        name: duvplex
     - name: Restart sshd service
       service: name=sshd state=restarted
     - name: Keep the laptop working if the lid is closed
