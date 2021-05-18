@@ -1,4 +1,4 @@
-* [[file:/ssh:kaipada@192.168.0.10:~/][duvplex]]
+* [[file:/ssh:jonnyparris@192.168.0.10:~/][duvplex]]
 
 #+CAPTION: Purple bad guy saying I am inevitable
 #+html: <p align="center"><img src="assets/MrPurple.gif" /></p>
@@ -85,7 +85,7 @@ docker-compose up -d
 
 ** Web config
 
-file:/ssh:kaipada@192.168.0.10:/mnt/data
+file:/ssh:jonnyparris@192.168.0.10:/mnt/data
 
 - Transmission      ==> http://192.168.0.10:9091
 - Jackett           ==> http://192.168.0.10:9117
@@ -95,7 +95,7 @@ file:/ssh:kaipada@192.168.0.10:/mnt/data
 
 Plex ssh tunneling, ssh like this first then the URL below will start to work, once we login in and setup stuff the normal URL above will work
 #+begin_src sh
-ssh -L32400:localhost:32400 kaipada@192.168.0.10
+ssh -L32400:localhost:32400 jonnyparris@192.168.0.10
 #+end_src
 
 - Plex         ==> http://localhost:32400/web
