@@ -109,3 +109,4 @@ Run
 
 - See more detailed write up of setup steps [here](assets/DetailedWriteUp.md)
 - Change entire season audio track easily: https://www.pastatool.com/ (Make sure to turn off VPN before connecting to it)
+- You can find your timezone [here](https://www.gokuldeepak.com/output-for-timedatectl-list-timezones/) to customise the `TZ` var in the [docker-compose.yml](docker-compose.yml)
