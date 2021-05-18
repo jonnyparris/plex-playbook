@@ -12,6 +12,8 @@ services:
     ports:
       - 9117:9117
     restart: unless-stopped
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
   sonarr:
     image: linuxserver/sonarr:preview
     container_name: sonarr
@@ -28,6 +30,8 @@ services:
       - jackett
       - transmission
     restart: unless-stopped
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
   radarr:
     image: linuxserver/radarr:preview
     container_name: radarr
@@ -45,6 +49,8 @@ services:
       - jackett
       - transmission
     restart: unless-stopped
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
   transmission:
     # https://haugene.github.io/docker-transmission-openvpn/
     image: haugene/transmission-openvpn
@@ -76,6 +82,8 @@ services:
     ports:
       - '9091:9091'
     restart: unless-stopped
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
   plex:
     image: linuxserver/plex
     container_name: plex
@@ -91,6 +99,8 @@ services:
     ports:
       - 32400:32400
     restart: unless-stopped
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
   tautulli:
     image: tautulli/tautulli
     container_name: tautulli
@@ -103,3 +113,20 @@ services:
       - TZ=Europe/Lisbon
     ports:
       - 8181:8181
+    label:
+      - com.centurylinklabs.watchtower.monitor-only: 'true'
+  overseerr:
+    image: sctx/overseerr:latest
+    container_name: overseerr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=Europe/Lisbon
+    ports:
+      - 5055:5055
+    volumes:
+      - ./config/overseerr:/config
+    restart: unless-stopped
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
