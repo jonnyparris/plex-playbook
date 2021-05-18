@@ -6,23 +6,29 @@
 - hosts: duvplex
   become: true
   gather_facts: true
-  vars_files: ansible_vault.yml
+  vars_files: ['ansible_vault.yml']
 
   tasks:
     - name: Add user and add user to sudoers list
       user:
         name: jonnyparris
-        groups: sudo
+        groups: ['sudo']
         append: yes
         password: "{{ password |  password_hash('sha512') }}"
         create_home: yes
         shell: /bin/bash
     - name: Add authorized keys
-      authorized_key: user=jonnyparris state=present key='{{ item }}'
+      authorized_key:
+        user: jonnyparris
+        state: present
+        key: '{{ item }}'
       with_file:
         - ~/.ssh/*.pub
     - name: Add authorized keys for root
-      authorized_key: user=root state=present key='{{ item }}'
+      authorized_key:
+        user: root
+        state: present
+        key: '{{ item }}'
       with_file:
         - ~/.ssh/*.pub
     - name: Copy a custom ssh banner
@@ -42,7 +48,9 @@
       ansible.builtin.hostname:
         name: duvplex
     - name: Restart sshd service
-      service: name=sshd state=restarted
+      service:
+        name: sshd
+        state: restarted
     - name: Setup commandline preferences
       ansible.builtin.copy:
         src: "{{ item }}"
@@ -77,7 +85,10 @@
         - downloads
         - media
     - name: Install Packages
-      apt: name={{ item }} update_cache=yes state=latest
+      apt:
+        name: {{ item }}
+        update_cache: yes
+        state: latest
       loop:
         [
           "vim",
@@ -118,11 +129,17 @@
         state: present
       tags: ["docker"]
     - name: Install Packages
-      apt: name={{ item }} update_cache=yes state=latest
+      apt:
+        name: {{ item }}
+        update_cache: yes
+        state: latest
       loop: ["docker-ce", "docker-ce-cli", "containerd.io"]
       tags: ["docker"]
     - name: Add user to docker group
-      user: name=jonnyparris groups=docker append=yes
+      user:
+        name: jonnyparris
+        groups: ['docker']
+        append: yes
       tags: ["docker"]
     - name: Install docker-compose
       get_url:
@@ -206,7 +223,9 @@
         state: present
       tags: ["transmission"]
     - name: Install transmission remote
-      apt: update_cache=yes name=transmission-cli
+      apt:
+        update_cache: yes
+        name: transmission-cli
       tags: ["transmission"]
     - name: Setup transmission cleanup system
       ansible.builtin.copy:
