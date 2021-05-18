@@ -43,12 +43,7 @@
         name: duvplex
     - name: Restart sshd service
       service: name=sshd state=restarted
-    - name: Keep the laptop working if the lid is closed
-      ansible.builtin.lineinfile:
-        path: /etc/systemd/logind.conf
-        regexp: "^(.*)HandleLidSwitch="
-        line: "HandleLidSwitch=ignore"
-    - name: Setup screen and other configs
+    - name: Setup commandline preferences
       ansible.builtin.copy:
         src: "{{ item }}"
         dest: "/home/jonnyparris/{{ item }}"
@@ -56,9 +51,12 @@
         group: jonnyparris
         mode: "0755"
       with_items:
-        - .screenrc
-        - .bashrc
-        - .bash_profile
+        - ~/.aliases
+        - ~/.functions
+        - ~/.zshrc
+        - ~/.zprofile
+        - ~/.zshenv
+        - ~/.zimrc
       tags: ["bash"]
     - name: Create media directories
       file:
@@ -85,7 +83,6 @@
           "vim",
           "rsync",
           "wget",
-          "screen",
           "apt-transport-https",
           "ca-certificates",
           "curl",
@@ -181,7 +178,7 @@
       tags: ["backup"]
     - name: Setup config backup system
       ansible.builtin.copy:
-        src: backup_config.sh
+        src: ./scripts/backup_config.sh
         dest: /home/jonnyparris/plex/backup_config.sh
         owner: jonnyparris
         group: jonnyparris
@@ -213,7 +210,7 @@
       tags: ["transmission"]
     - name: Setup transmission cleanup system
       ansible.builtin.copy:
-        src: remove_completed.sh
+        src: ./scripts/remove_completed.sh
         dest: /home/jonnyparris/plex/remove_completed.sh
         owner: jonnyparris
         group: jonnyparris
