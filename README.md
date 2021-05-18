@@ -96,8 +96,6 @@ ssh -L32400:localhost:32400 jonnyparris@192.168.0.10
 
 - Plex         ==> http://localhost:32400/web
 
-See more detailed write up: file:assets/DetailedWriteUp.md
-
 ## Setup dropbox uploader to backup config
 
 https://github.com/andreafabrizi/Dropbox-Uploader
@@ -107,17 +105,7 @@ Run
 ~/plex/dropbox_uploader.sh
 ```
 
-## Setup Plex Trakt Sync
-
-https://github.com/Taxel/PlexTraktSync#setup
-
-Run
-``` sh
-cd ~/plex/PlexTraktSync-0.8.16
-python3 main.py
-```
-
 ## Notes
 
-Change entire season audio track easily: https://www.pastatool.com/
-  - Make sure to turn off VPN before connecting to it
+- See more detailed write up of setup steps [here](assets/DetailedWriteUp.md)
+- Change entire season audio track easily: https://www.pastatool.com/ (Make sure to turn off VPN before connecting to it)

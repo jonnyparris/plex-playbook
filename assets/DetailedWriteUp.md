@@ -1,34 +1,36 @@
+the below is pasted from [this reddit post:](https://old.reddit.com/r/Piracy/comments/ma1hlm/the_complete_guide_to_building_your_own_personal/)
+
 ## Introduction
 
-  
+
 
 Plex Media Server  is an excellent application, with compatible apps on almost every device with a screen. However, it's only as capable as the files you give it, and it's only as maintainable as the infrastructure you use to build it. This guide will cover installation and configuration on a flexible service platform known as Docker.
 
-  
+
 
 Docker is relatively operating system agnostic, but this guide will feature Linux commands and paths so it will also cover installing Linux.
 
-  
+
 
 ## Operating System
 
-  
+
 
 If you're an experienced Linux user, you can skip this step as you likely either already know how to install Ubuntu Server or you have another Linux distribution preference.
 
-  
+
 
 Download Ubuntu Server from [https://ubuntu.com/download/server](https://ubuntu.com/download/server). Use [unetbootin](https://unetbootin.github.io/) to push the ISO onto a USB drive (just copying the contents will not work) or use a CD burning tool to burn the ISO onto a CD.
 
-  
+
 
 On a new machine, all that should be required is to insert the USB drive and boot. If updating over an existing operating system, find your boot menu (or boot options, as it's sometimes called) and select the USB drive as the boot device.
 
-  
+
 
 **Read the next part fully before proceeding with the install.**
 
-  
+
 
 Take note that the installation can destroy data if you're installing on a system in use. I recommend disconnecting your media drives and leaving only the drive that you intend to let Ubuntu use. If you're dual booting (keeping windows on the same machine), this guide does not apply and you should search for a guide particularly for "dual booting".
 
@@ -41,7 +43,7 @@ When the install has finished, reconnect your drives and boot up.
 Connect to the machine remotely from an existing Windows 10 (via Command Prompt), Mac (via Terminal) or Linux computer (via Terminal) with
 
     ssh your-username@serverIP
-  
+
  where `your-username` is the username chosen, and `serverIP` can be found with the command `ip addr show` (usually the one prefixed with `192.168`.
 
 ### Using Symbolic Links to Keep Media on the Same Drive (option 1)
@@ -50,8 +52,8 @@ While not recommended for portability reasons, if you are using only one drive f
     mkdir /mnt/data
     mkdir ~/plexmedia
     sudo ln -s $HOME/plexmedia /mnt/data/
-    
-### Auto-Mounting a different Drive(s) (option 2)    
+
+### Auto-Mounting a different Drive(s) (option 2)
 
 Once you've installed and are at a console (preferably via ssh so you can copy+paste the rest of the commands), ask the disk format utility what the available filesystems are with the command:
 
@@ -73,12 +75,12 @@ Tip: Whenever you prefix a command with `sudo`, it runs as a "root user" or the 
 Once you have added all entries, verify that everything works with the following "mount all" command:
 
     sudo mount -a
-    
-This guide will assume you mount at `/mnt/data` and that your drive contains  `/mnt/data/downloads`, `/mnt/data/media/tv`, and `/mnt/data/media/movies` as subdirectories.  
+
+This guide will assume you mount at `/mnt/data` and that your drive contains  `/mnt/data/downloads`, `/mnt/data/media/tv`, and `/mnt/data/media/movies` as subdirectories.
 
 ## Installing Docker and Compose
 
-  
+
 
 Once you've installed, rebooted, and logged in you should be left with a fresh install of Linux. We're going to keep it that way by only installing two things: docker and docker-compose.
 
@@ -139,28 +141,28 @@ Jackett is a all-in-one torrent query engine, and more importantly, it is search
 
 An example entry for the compose file is:
 
-    jackett:    
-        image: linuxserver/jackett    
+    jackett:
+        image: linuxserver/jackett
         container_name: jackett
-        environment:    
-            - PUID=1000    
-            - PGID=1000    
-            - TZ=Americas/New_York    
-        volumes:    
-            - ./config/jackett:/config    
-        ports:    
-            - 9117:9117    
+        environment:
+            - PUID=1000
+            - PGID=1000
+            - TZ=Americas/New_York
+        volumes:
+            - ./config/jackett:/config
+        ports:
+            - 9117:9117
         restart: unless-stopped
 
 Ensure it is indented under `services`
 
 ### Transmission-OpenVPN
-In order for our traffic to remain private and secure, we will use a downloader enabled by an OpenVPN provider of your choice.  I use TorGuard, but you can use any provider in [the supported providers list](https://haugene.github.io/docker-transmission-openvpn/supported-providers/). 
+In order for our traffic to remain private and secure, we will use a downloader enabled by an OpenVPN provider of your choice.  I use TorGuard, but you can use any provider in [the supported providers list](https://haugene.github.io/docker-transmission-openvpn/supported-providers/).
 
 An example entry for the compose file is:
 
-    transmission:    
-        image: haugene/transmission-openvpn    
+    transmission:
+        image: haugene/transmission-openvpn
         container_name: transmission
         volumes:
             - /mnt/data:/mnt/data
@@ -216,7 +218,7 @@ An example entry for the compose file is:
             - ./config/sonarr:/config
             - /mnt/data:/mnt/data
         ports:
-            - 8989:8989		
+            - 8989:8989
         depends_on:
             - jackett
             - transmission
@@ -250,8 +252,8 @@ An example entry for the compose file is:
 
 As in above, `PUID` and `PGID` must match the `uid` and `gid` of the drive mount.
 
-### Plex 
-The Plex instance would ideally live on another server, but it's not required and adds complexity with file sharing systems. 
+### Plex
+The Plex instance would ideally live on another server, but it's not required and adds complexity with file sharing systems.
 
 Plex has an official docker image, but it does a poor job of managing permissions (which I've hoped you realized are important by now).  Instead, we will use the [linuxserver/plex](https://hub.docker.com/r/linuxserver/plex) image, which is maintained by the friendly folks at [linuxserver.io](https://www.linuxserver.io/).
 
@@ -302,7 +304,7 @@ Afterwards, add the entry:
 
 #### NVIDIA GPU Transcoding
 
-NVIDIA is the most complicated process of the bunch, but is still doable in docker.  First, download the Linux drivers for your GPU from [the official NVIDIA drivers page](https://www.nvidia.com/Download/index.aspx).  After clicking search and the first download button, when you get to the last page that contains the text 
+NVIDIA is the most complicated process of the bunch, but is still doable in docker.  First, download the Linux drivers for your GPU from [the official NVIDIA drivers page](https://www.nvidia.com/Download/index.aspx).  After clicking search and the first download button, when you get to the last page that contains the text
 >This download includes the NVIDIA graphics driver
 
 right-click the "DOWNLOAD" button and copy the link.  Then, in your Linux server machine, run the following commands (copy one line at a time):
@@ -361,7 +363,7 @@ Jackett is only as good as the trackers you have added to it.  Navigate to `http
 
 Add a few indexers using the "add indexer" button.  It may feel like a good idea to add a lot, but that increases search times for every single search.  At minimum, I consider the following essential:
 
-* 1337x 
+* 1337x
 * EZTV
 * ETTV
 * RARBG
@@ -482,7 +484,7 @@ Below is a partial list of port-fowarding capable VPN providers and regions.  It
 * PrivateInternetAccess (PIA)
 	* Supported only in a handful of regions, but all work automatically
 	* As of testing, those regions are
-		* CA Toronto  
+		* CA Toronto
 		 * CA Montreal
 		 * Netherlands
 		 * Switzerland
