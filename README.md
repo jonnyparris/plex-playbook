@@ -3,6 +3,14 @@
 Home NAS / Plex media server setup.
 - Server setup using ansible
 - Setup docker containers for all services and isolated VPN for transmission
+  - ~~Plex: media server~~ ✅
+  - ~~Sonarr: series tracker~~ ✅
+  - ~~Radarr: movies tracker~~ ✅
+  - ~~Jackett: torrent client api~~ ✅
+  - Bazarr: subtitles tracker 🚧
+  - Tautulli: plex usage stats 🚧
+  - Rclone: remote/cloud file management 🚧
+  - Ombi: handle media requests 🚧
 
 ## Setting up ansible
 
