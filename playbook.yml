@@ -18,13 +18,11 @@
         create_home: yes
         shell: /bin/bash
     - name: Add authorized keys
-      authorized_key:
-        user=jonnyparris state=present key='{{ item }}'
+      authorized_key: user=jonnyparris state=present key='{{ item }}'
       with_file:
         - key.pub
     - name: Add authorized keys for root
-      authorized_key:
-        user=root state=present key='{{ item }}'
+      authorized_key: user=root state=present key='{{ item }}'
       with_file:
         - key.pub
     - name: Copy a custom ssh banner
@@ -33,12 +31,12 @@
         dest: /etc/ssh/sshd-banner
         owner: root
         group: root
-        mode: '0755'
+        mode: "0755"
     - name: Enable custom banner
       ansible.builtin.lineinfile:
         path: /etc/ssh/sshd_config
         firstmatch: yes
-        regexp: '^(.*)Banner'
+        regexp: "^(.*)Banner"
         line: Banner /etc/ssh/sshd-banner
     - name: Set a hostname
       ansible.builtin.hostname:
@@ -48,23 +46,23 @@
     - name: Keep the laptop working if the lid is closed
       ansible.builtin.lineinfile:
         path: /etc/systemd/logind.conf
-        regexp: '^(.*)HandleLidSwitch='
+        regexp: "^(.*)HandleLidSwitch="
         line: "HandleLidSwitch=ignore"
     - name: Setup screen and other configs
       ansible.builtin.copy:
-        src: '{{ item }}'
-        dest: '/home/jonnyparris/{{ item }}'
+        src: "{{ item }}"
+        dest: "/home/jonnyparris/{{ item }}"
         owner: jonnyparris
         group: jonnyparris
-        mode: '0755'
+        mode: "0755"
       with_items:
         - .screenrc
         - .bashrc
         - .bash_profile
-      tags: [ 'bash' ]
+      tags: ["bash"]
     - name: Create media directories
       file:
-        path: '{{ item }}'
+        path: "{{ item }}"
         state: directory
       with_items:
         - /mnt/data
@@ -82,106 +80,119 @@
         - media
     - name: Install Packages
       apt: name={{ item }} update_cache=yes state=latest
-      loop: [ 'vim','rsync','wget','screen', 'apt-transport-https', 'ca-certificates', 'curl' ,'gnupg', 'lsb-release', 'p7zip-full','python3-pip', 'intel-gpu-tools' ]
-      tags: [ 'install' ]
+      loop:
+        [
+          "vim",
+          "rsync",
+          "wget",
+          "screen",
+          "apt-transport-https",
+          "ca-certificates",
+          "curl",
+          "gnupg",
+          "lsb-release",
+          "p7zip-full",
+          "python3-pip",
+          "intel-gpu-tools",
+        ]
+      tags: ["install"]
     - name: Get ubuntu version
       command: lsb_release -cs
       register: ubuntu_version
-      tags: [ 'docker' ]
+      tags: ["docker"]
     - name: Get system info
       command: uname -s
       register: unameS
-      tags: [ 'docker' ]
+      tags: ["docker"]
     - name: Get system info
       command: uname -m
       register: unameM
-      tags: [ 'docker' ]
+      tags: ["docker"]
     - name: Add a signing key for docker
       ansible.builtin.apt_key:
         url: https://download.docker.com/linux/ubuntu/gpg
         keyring: /usr/share/keyrings/docker-archive-keyring.gpg
         state: present
-      tags: [ 'docker' ]
+      tags: ["docker"]
     - name: Add docker repository into sources list
       ansible.builtin.apt_repository:
-        repo: 'deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ubuntu_version.stdout }} stable'
+        repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ubuntu_version.stdout }} stable"
         filename: docker.list
         state: present
-      tags: [ 'docker' ]
+      tags: ["docker"]
     - name: Install Packages
       apt: name={{ item }} update_cache=yes state=latest
-      loop: [ 'docker-ce','docker-ce-cli','containerd.io']
-      tags: [ 'docker' ]
+      loop: ["docker-ce", "docker-ce-cli", "containerd.io"]
+      tags: ["docker"]
     - name: Add user to docker group
-      user:
-        name=jonnyparris groups=docker append=yes
-      tags: [ 'docker' ]
+      user: name=jonnyparris groups=docker append=yes
+      tags: ["docker"]
     - name: Install docker-compose
       get_url:
-         url : 'https://github.com/docker/compose/releases/download/1.28.5/docker-compose-{{ unameS.stdout }}-{{ unameM.stdout }}'
-         dest: /usr/local/bin/docker-compose
-         mode: 'u+x,g+x'
-      tags: [ 'docker' ]
+        url: "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-{{ unameS.stdout }}-{{ unameM.stdout }}"
+        dest: /usr/local/bin/docker-compose
+        mode: "u+x,g+x"
+      tags: ["docker"]
     - name: Copy docker compose file over to remote
       ansible.builtin.copy:
         src: docker-compose.yml
         dest: /home/jonnyparris/plex/docker-compose.yml
         owner: jonnyparris
         group: jonnyparris
-        mode: '0755'
-      tags: [ 'docker', 'compose']
+        mode: "0755"
+      tags: ["docker", "compose"]
     - name: Change username in docker compose file
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/docker-compose.yml
-        regexp: '^(.*)OPENVPN_USERNAME'
+        regexp: "^(.*)OPENVPN_USERNAME"
         line: "        - OPENVPN_USERNAME={{ OPENVPN_USERNAME }}"
-      tags: [ 'docker', 'compose']
+      tags: ["docker", "compose"]
     - name: Change password in docker compose file
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/docker-compose.yml
-        regexp: '^(.*)OPENVPN_PASSWORD'
+        regexp: "^(.*)OPENVPN_PASSWORD"
         line: "        - OPENVPN_PASSWORD={{ OPENVPN_PASSWORD }}"
-      tags: [ 'docker', 'compose']
+      tags: ["docker", "compose"]
     - name: Allow all access to some tcp ports
       ufw:
         rule: allow
-        port: '{{ item }}'
+        port: "{{ item }}"
         proto: tcp
-      with_items: ['22','7878','8989','9091','32400','20']
-      tags: [ 'ufw']
+      with_items: ["22", "7878", "8989", "9091", "32400", "20"]
+      tags: ["ufw"]
     - name: Allow all access to some udp ports
       ufw:
         rule: allow
-        port: '{{ item }}'
+        port: "{{ item }}"
         proto: udp
-      with_items: ['32400']
-      tags: [ 'ufw']
+      with_items: ["32400"]
+      tags: ["ufw"]
     - name: Enable UFW
       ufw:
         state: enabled
-      tags: [ 'ufw']
+      tags: ["ufw"]
     - name: Setup dropbox upload system
       get_url:
         url: https://raw.githubusercontent.com/andreafabrizi/Dropbox-Uploader/master/dropbox_uploader.sh
         dest: /home/jonnyparris/plex/dropbox_uploader.sh
         owner: jonnyparris
         group: jonnyparris
-        mode: '0700'
-      tags: [ 'backup']
+        mode: "0700"
+      tags: ["backup"]
     - name: Setup config backup system
       ansible.builtin.copy:
         src: backup_config.sh
         dest: /home/jonnyparris/plex/backup_config.sh
         owner: jonnyparris
         group: jonnyparris
-        mode: '0700'
-      tags: [ 'backup']
+        mode: "0700"
+      tags: ["backup"]
     - name: Change password in backup script
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/backup_config.sh
-        regexp: 'PASSWORD_7z='
+        regexp: "PASSWORD_7z="
         line: "PASSWORD_7z={{ PASSWORD_7Z }}"
-      tags: [ 'backup']
+      tags: ["backup"]
     - name: Ensure backup job is once a day
       ansible.builtin.cron:
         name: "backup config"
@@ -190,24 +201,24 @@
         job: "/home/jonnyparris/plex/backup_config.sh > /tmp/backup_config.log  2>&1"
       become: yes
       become_user: jonnyparris
-      tags: [ 'backup']
+      tags: ["backup"]
     - name: Add transmission repository into sources list
       ansible.builtin.apt_repository:
         validate_certs: no
-        repo: 'ppa:transmissionbt/ppa'
+        repo: "ppa:transmissionbt/ppa"
         state: present
-      tags: [ 'transmission' ]
+      tags: ["transmission"]
     - name: Install transmission remote
       apt: update_cache=yes name=transmission-cli
-      tags: [ 'transmission' ]
+      tags: ["transmission"]
     - name: Setup transmission cleanup system
       ansible.builtin.copy:
         src: remove_completed.sh
         dest: /home/jonnyparris/plex/remove_completed.sh
         owner: jonnyparris
         group: jonnyparris
-        mode: '0700'
-      tags: [ 'transmission' ]
+        mode: "0700"
+      tags: ["transmission"]
     - name: Ensure transmission cleanup job is run once a day
       ansible.builtin.cron:
         name: "remove completed"
@@ -216,58 +227,4 @@
         job: "/home/jonnyparris/plex/remove_completed.sh > /tmp/cleanup_transmission.log  2>&1"
       become: yes
       become_user: jonnyparris
-      tags: [ 'transmission' ]
-    - name: Setup boruto renaming system
-      ansible.builtin.copy:
-        src: rename_boruto.sh
-        dest: /home/jonnyparris/plex/rename_boruto.sh
-        owner: jonnyparris
-        group: jonnyparris
-        mode: '0700'
-      tags: [ 'boruto' ]
-    - name: Ensure boruto renaming system once every sunday
-      ansible.builtin.cron:
-        name: "rename boruto"
-        hour: "6" # 6 am
-        weekday: "0" # sunday
-        job: "/home/jonnyparris/plex/rename_boruto.sh > /tmp/boruto_renaming.log  2>&1"
-      become: yes
-      become_user: jonnyparris
-      tags: [ 'boruto' ]
-    - name: Download PlexTraktSync
-      get_url:
-         url : https://github.com/Taxel/PlexTraktSync/archive/refs/tags/0.8.16.zip
-         dest: /home/jonnyparris/plex/PlexTraktSync.zip
-         owner: jonnyparris
-         group: jonnyparris
-         mode: '0700'
-      tags: [ 'trakt' ]
-    - name: Unzip PlexTraktSync
-      ansible.builtin.unarchive:
-        src: /home/jonnyparris/plex/PlexTraktSync.zip
-        dest: /home/jonnyparris/plex/
-        owner: jonnyparris
-        group: jonnyparris
-        mode: '0700'
-        remote_src: yes
-      tags: [ 'trakt' ]
-    - name: Remove PlexTraktSync zip file
-      file:
-        state: absent
-        path: /home/jonnyparris/plex/PlexTraktSync.zip
-      tags: [ 'trakt' ]
-    - name: Install python requirements for PlexTraktSync
-      pip:
-        requirements: /home/jonnyparris/plex/PlexTraktSync-0.8.16/requirements.txt
-        executable: pip3
-      tags: [ 'trakt' ]
-      # Setup the app: https://github.com/Taxel/PlexTraktSync#setup
-    - name: Run plexTraktSync on an hourly basis
-      ansible.builtin.cron:
-        name: "PlexTraktSync"
-        minute: '5'
-        hour: "7,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23"
-        job: "date > /tmp/plex_trakt_sync.log && cd /home/jonnyparris/plex/PlexTraktSync-0.8.16 && ./plex_trakt_sync.sh >> /tmp/plex_trakt_sync.log  2>&1"
-      become: yes
-      become_user: jonnyparris
-      tags: [ 'traktcron' ]
+      tags: ["transmission"]
