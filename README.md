@@ -1,78 +1,75 @@
-* [[file:/ssh:jonnyparris@192.168.0.10:~/][duvplex]]
-
-#+CAPTION: Purple bad guy saying I am inevitable
-#+html: <p align="center"><img src="assets/MrPurple.gif" /></p>
+# duvplex
 
 Home NAS / Plex media server setup.
 - Server setup using ansible
 - Setup docker containers for all services and isolated VPN for transmission
 
-** Setting up ansible
+## Setting up ansible
 
-#+begin_src sh
+``` sh
 pip install ansible
 pip install passlib
-#+end_src
+```
 
 Set up the server list to play on
 file:./ansible_hosts.conf
 
 Check inventory after setting up file
-#+begin_src sh
+``` sh
 sudo mkdir /etc/ansible
 sudo ln -s ~/Repos/Notes/duvplex/ansible_hosts.conf /etc/ansible/hosts
 ansible-inventory --list -y
 
 # or specify inventory
 ansible-inventory -i ansible_hosts.conf --list -y
-#+end_src
+```
 
-** Test connection
+## Test connection
 
 Add public key to the server as root and then test out connection
 
 Tries to ssh as root in this case
-#+begin_src sh
+``` sh
 ansible all -m ping -u root
 # or
 ansible all -m ping -u root --ask-pass
-#+end_src
+```
 
-** Vault to store passwords
+## Vault to store passwords
 
 file:ansible_vault_password.txt --> vault password
 file:ansible_vault.yml --> Put passwords here
 
-#+begin_src sh
+``` sh
 cd ~/Repos/duvplex/
 ansible-vault create ansible_vault.yml
 ansible-vault decrypt --vault-password-file=ansible_vault_password.txt ansible_vault.yml
 ansible-vault encrypt --vault-password-file=ansible_vault_password.txt ansible_vault.yml
-#+end_src
+```
 
-** Set VPN password in the vault
+## Set VPN password in the vault
 
 file:ansible_vault.yml --> Put passwords here
 
-#+begin_src yml
+``` yml
 password: server_password_we_wanna_set
 OPENVPN_USERNAME: sdsdsijsldijij
 OPENVPN_PASSWORD: sdopksdpjsdpsijpass
 PASSWORD_7Z: password used when backing up config files
-#+end_src
+```
 
-** Execute the playbook
+## Execute the playbook
 
-#+begin_src sh
+``` sh
 ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
 ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
 ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags traktcron
-#+end_src
+```
 
-** Bring the docker containers up manually now that server is setup
+## Bring the docker containers up manually now that server is setup
 
 Create everything
-#+begin_src sh
+``` sh
 cd ~/plex
 # likley problematic one so run it alone to fix it if need be because this container also holds the VPN info
 docker-compose up transmission
@@ -81,9 +78,9 @@ docker-compose up # run all the services we just set up
 
 # run as deamon FOREVAAAAAA
 docker-compose up -d
-#+end_src
+```
 
-** Web config
+## Web config
 
 file:/ssh:jonnyparris@192.168.0.10:/mnt/data
 
@@ -94,34 +91,34 @@ file:/ssh:jonnyparris@192.168.0.10:/mnt/data
 - Plex(After setup) ==> http://192.168.0.10:32400/web
 
 Plex ssh tunneling, ssh like this first then the URL below will start to work, once we login in and setup stuff the normal URL above will work
-#+begin_src sh
+``` sh
 ssh -L32400:localhost:32400 jonnyparris@192.168.0.10
-#+end_src
+```
 
 - Plex         ==> http://localhost:32400/web
 
 See more detailed write up: file:assets/DetailedWriteUp.md
 
-** Setup dropbox uploader to backup config
+## Setup dropbox uploader to backup config
 
 https://github.com/andreafabrizi/Dropbox-Uploader
 
 Run
-#+begin_src sh
+``` sh
 ~/plex/dropbox_uploader.sh
-#+end_src
+```
 
-** Setup Plex Trakt Sync
+## Setup Plex Trakt Sync
 
 https://github.com/Taxel/PlexTraktSync#setup
 
 Run
-#+begin_src sh
+``` sh
 cd ~/plex/PlexTraktSync-0.8.16
 python3 main.py
-#+end_src
+```
 
-** Notes
+## Notes
 
 Change entire season audio track easily: https://www.pastatool.com/
   - Make sure to turn off VPN before connecting to it
