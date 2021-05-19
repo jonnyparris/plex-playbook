@@ -90,8 +90,9 @@ services:
     volumes:
       - /mnt/data/media:/media
       - ./config/plex:/config
-    devices:
-      - '/dev/dri:/dev/dri'
+    # Uncomment the below if you've got hardware acceleration available
+    # devices:
+    #   - '/dev/dri:/dev/dri'
     environment:
       - PUID=1000
       - PGID=1000
