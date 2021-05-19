@@ -1,4 +1,4 @@
-# duvplex playbook
+# VPS Plex ansible playbook
 
 VPS/NAS Plex media server setup.
 - Server setup using ansible
@@ -16,7 +16,6 @@ VPS/NAS Plex media server setup.
 
 ``` sh
 pip install ansible
-pip install passlib
 ```
 (or use homebrew: `brew install ansible`)
 
@@ -41,8 +40,6 @@ Add public key to the server as root and then test out connection
 Tries to ssh as root in this case
 ``` sh
 ansible all -m ping -u root
-# or
-ansible all -m ping -u root --ask-pass
 ```
 
 ## Vault to store passwords
@@ -57,12 +54,11 @@ ansible-vault decrypt --vault-password-file=ansible_vault_password.txt ansible_v
 ansible-vault encrypt --vault-password-file=ansible_vault_password.txt ansible_vault.yml
 ```
 
-## Set VPN password in the vault
+## Set VPN password in ansible vault
 
 Set your passwords in a file named `ansible_vault.yml`:
 
 ``` yml
-password: server_password_we_wanna_set
 OPENVPN_USERNAME: sdsdsijsldijij
 OPENVPN_PASSWORD: sdopksdpjsdpsijpass
 PASSWORD_7Z: password used when backing up config files

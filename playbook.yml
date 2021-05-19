@@ -14,7 +14,6 @@
         name: jonnyparris
         groups: ["sudo"]
         append: yes
-        password: "{{ password |  password_hash('sha512') }}"
         create_home: yes
         shell: /bin/bash
     - name: Add authorized keys
@@ -157,7 +156,7 @@
         regexp: "^(.*)OPENVPN_USERNAME"
         line: "        - OPENVPN_USERNAME={{ OPENVPN_USERNAME }}"
       tags: ["docker", "compose"]
-    - name: Change password in docker compose file
+    - name: Change OpenVPN password in docker compose file
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/docker-compose.yml
         regexp: "^(.*)OPENVPN_PASSWORD"
