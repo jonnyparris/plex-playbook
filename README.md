@@ -18,7 +18,7 @@ VPS/NAS Plex media server setup.
 pip install ansible
 pip install passlib
 ```
-(or use homebrew `brew install ansible`)
+(or use homebrew: `brew install ansible`)
 
 ## Set up the server list to play on
 
@@ -59,7 +59,7 @@ ansible-vault encrypt --vault-password-file=ansible_vault_password.txt ansible_v
 
 ## Set VPN password in the vault
 
-file:ansible_vault.yml --> Put passwords here
+Set your passwords in a file named `ansible_vault.yml`:
 
 ``` yml
 password: server_password_we_wanna_set
@@ -91,7 +91,7 @@ docker-compose up -d
 
 ## Web config
 
-file:/ssh:jonnyparris@duvcloud:/mnt/data
+You might want to setup your remote IP in your [`/etc/hosts`](/etc/hosts) file (e.g. `165.89.88.177 duvcloud`) to save having to remember a random IP address.
 
 - Transmission      ==> http://duvcloud:9091
 - Jackett           ==> http://duvcloud:9117
