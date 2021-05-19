@@ -60,7 +60,7 @@ ansible-vault encrypt --vault-password-file=ansible_vault_password.txt ansible_v
 Set your passwords in a file named `ansible_vault.yml`:
 
 ``` yml
-password: your_suepr_secure_server_password
+password: your_super_secure_server_password
 OPENVPN_USERNAME: sdsdsijsldijij
 OPENVPN_PASSWORD: sdopksdpjsdpsijpass
 PASSWORD_7Z: password used when backing up config files
