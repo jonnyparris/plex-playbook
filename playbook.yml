@@ -16,6 +16,8 @@
         append: yes
         create_home: yes
         shell: /bin/bash
+        password: "{{ password | password_hash('sha512') }}"
+      tags: ['users']
     - name: Add authorized keys
       authorized_key:
         user: jonnyparris
