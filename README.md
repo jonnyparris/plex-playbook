@@ -18,11 +18,13 @@ VPS/NAS Plex media server setup.
 pip install ansible
 pip install passlib
 ```
+(or use homebrew `brew install ansible`)
 
-Set up the server list to play on
-file:./ansible_hosts.conf
+## Set up the server list to play on
 
-Check inventory after setting up file
+Check inventory after setting up the [ansible hosts file](./ansible_hosts.conf) in the expected location `/etc/ansible/hosts` .
+
+(Below it's being symlinked to the file in this repo but you can also just paste the contents there directly.)
 ``` sh
 sudo mkdir /etc/ansible
 sudo ln -s ~/Repos/Notes/duvplex/ansible_hosts.conf /etc/ansible/hosts
@@ -69,8 +71,8 @@ PASSWORD_7Z: password used when backing up config files
 ## Execute the playbook
 
 ``` sh
-ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
-ansible-playbook setup_duvplex_playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
+ansible-playbook playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt
+ansible-playbook playbook.yml -i ansible_hosts.conf --vault-pass-file ansible_vault_password.txt --tags backup
 ```
 
 ## Bring the docker containers up manually now that server is setup
@@ -89,17 +91,17 @@ docker-compose up -d
 
 ## Web config
 
-file:/ssh:jonnyparris@192.168.0.10:/mnt/data
+file:/ssh:jonnyparris@duvcloud:/mnt/data
 
-- Transmission      ==> http://192.168.0.10:9091
-- Jackett           ==> http://192.168.0.10:9117
-- Radarr            ==> http://192.168.0.10:7878
-- Sonarr            ==> http://192.168.0.10:8989
-- Plex(After setup) ==> http://192.168.0.10:32400/web
+- Transmission      ==> http://duvcloud:9091
+- Jackett           ==> http://duvcloud:9117
+- Radarr            ==> http://duvcloud:7878
+- Sonarr            ==> http://duvcloud:8989
+- Plex(After setup) ==> http://duvcloud:32400/web
 
 Plex ssh tunneling, ssh like this first then the URL below will start to work, once we login in and setup stuff the normal URL above will work
 ``` sh
-ssh -L32400:localhost:32400 jonnyparris@192.168.0.10
+ssh -L32400:localhost:32400 jonnyparris@duvcloud
 ```
 
 - Plex         ==> http://localhost:32400/web
