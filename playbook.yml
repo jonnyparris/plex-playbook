@@ -6,13 +6,13 @@
 - hosts: duvplex
   become: true
   gather_facts: true
-  vars_files: ['ansible_vault.yml']
+  vars_files: ["ansible_vault.yml"]
 
   tasks:
     - name: Add user and add user to sudoers list
       user:
         name: jonnyparris
-        groups: ['sudo']
+        groups: ["sudo"]
         append: yes
         password: "{{ password |  password_hash('sha512') }}"
         create_home: yes
@@ -21,7 +21,7 @@
       authorized_key:
         user: jonnyparris
         state: present
-        key: '{{ item }}'
+        key: "{{ item }}"
       with_file:
         - ~/.ssh/*.pub
     - name: Remove Root SSH Configuration
@@ -38,7 +38,7 @@
         mode: "0755"
     - name: Copy Secured SSHD Configuration
       copy:
-        src: sshd_config_secured
+        src: ./sshd_config_secured
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
@@ -86,7 +86,7 @@
         - media
     - name: Install Packages
       apt:
-        name: {{ item }}
+        name: "{{ item }}"
         update_cache: yes
         state: latest
       loop:
@@ -130,7 +130,7 @@
       tags: ["docker"]
     - name: Install Packages
       apt:
-        name: {{ item }}
+        name: "{{ item }}"
         update_cache: yes
         state: latest
       loop: ["docker-ce", "docker-ce-cli", "containerd.io"]
@@ -138,7 +138,7 @@
     - name: Add user to docker group
       user:
         name: jonnyparris
-        groups: ['docker']
+        groups: ["docker"]
         append: yes
       tags: ["docker"]
     - name: Install docker-compose
