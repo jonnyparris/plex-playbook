@@ -83,7 +83,7 @@ docker-compose up transmission
 
 docker-compose up # run all the services we just set up
 
-# run as backgroun deamon
+# run as background deamon
 docker-compose up -d
 ```
 
