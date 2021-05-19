@@ -21,14 +21,11 @@
       authorized_key:
         user: jonnyparris
         state: present
-        key: "{{ item }}"
-      with_file:
-        - ~/.ssh/*.pub
+        key: "{{ lookup('file', '~/.ssh/id_*.pub') }}"
     - name: Remove Root SSH Configuration
       file:
         path: /root/.ssh
         state: absent
-      sudo: yes
     - name: Copy a custom ssh banner
       ansible.builtin.copy:
         src: ./assets/ssh_banner.txt
@@ -43,7 +40,6 @@
         owner: root
         group: root
         mode: 0644
-      sudo: yes
     - name: Set a hostname
       ansible.builtin.hostname:
         name: duvplex
