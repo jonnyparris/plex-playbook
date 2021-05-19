@@ -20,7 +20,7 @@
       authorized_key:
         user: jonnyparris
         state: present
-        key: "{{ lookup('file', '~/.ssh/id_*.pub') }}"
+        key: "{{ lookup('file', 'key.pub') }}"
     - name: Remove Root SSH Configuration
       file:
         path: /root/.ssh

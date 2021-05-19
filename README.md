@@ -35,7 +35,8 @@ ansible-inventory -i ansible_hosts.conf --list -y
 
 ## Test connection
 
-Add public key to the server as root and then test out connection
+Add public key to the server as root and then test out connection.
+Also copy that public key to this folder for the playbook to use when it runs.
 
 Tries to ssh as root in this case
 ``` sh

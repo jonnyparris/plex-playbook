@@ -4,3 +4,5 @@
 *.retry
 ansible_vault.yml
 ansible_vault_password.txt
+
+*.pub
