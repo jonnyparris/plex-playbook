@@ -34,7 +34,7 @@
         mode: "0755"
     - name: Copy Secured SSHD Configuration
       copy:
-        src: ./sshd_config_secured
+        src: ./ssh_config_secured
         dest: /etc/ssh/sshd_config
         owner: root
         group: root
@@ -46,21 +46,30 @@
       service:
         name: sshd
         state: restarted
-    - name: Setup commandline preferences
+    - name: Setup commandline preferences part 1
       ansible.builtin.copy:
-        src: "{{ item }}"
+        src: "~/dotfiles/{{ item }}"
+        dest: "/home/jonnyparris/.{{ item }}"
+        owner: jonnyparris
+        group: jonnyparris
+        mode: "0755"
+      with_items:
+        - aliases
+        - functions
+        - zshrc
+        - zshenv
+      tags: ["zsh"]
+    - name: Setup commandline preferences part 2
+      ansible.builtin.copy:
+        src: "~/.{{ item }}"
         dest: "/home/jonnyparris/{{ item }}"
         owner: jonnyparris
         group: jonnyparris
         mode: "0755"
       with_items:
-        - ~/.aliases
-        - ~/.functions
-        - ~/.zshrc
-        - ~/.zprofile
-        - ~/.zshenv
-        - ~/.zimrc
-      tags: ["bash"]
+        - zprofile
+        - zimrc
+      tags: ["zsh"]
     - name: Create media directories
       file:
         path: "{{ item }}"
