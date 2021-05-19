@@ -165,13 +165,13 @@
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/docker-compose.yml
         regexp: "^(.*)OPENVPN_USERNAME"
-        line: "        - OPENVPN_USERNAME={{ OPENVPN_USERNAME }}"
+        line: "      - OPENVPN_USERNAME={{ OPENVPN_USERNAME }}"
       tags: ["docker", "compose"]
     - name: Change OpenVPN password in docker compose file
       ansible.builtin.lineinfile:
         path: /home/jonnyparris/plex/docker-compose.yml
         regexp: "^(.*)OPENVPN_PASSWORD"
-        line: "        - OPENVPN_PASSWORD={{ OPENVPN_PASSWORD }}"
+        line: "      - OPENVPN_PASSWORD={{ OPENVPN_PASSWORD }}"
       tags: ["docker", "compose"]
     - name: Allow all access to some tcp ports
       ufw:
