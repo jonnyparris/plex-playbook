@@ -61,8 +61,8 @@ Set your passwords in a file named `ansible_vault.yml`:
 
 ``` yml
 password: your_super_secure_server_password
-OPENVPN_USERNAME: sdsdsijsldijij
-OPENVPN_PASSWORD: sdopksdpjsdpsijpass
+OPENVPN_USERNAME: sdsdsijsldijij # service creds if using nord
+OPENVPN_PASSWORD: sdopksdpjsdpsijpass # service creds if using nord
 PASSWORD_7Z: password used when backing up config files
 ```
 
