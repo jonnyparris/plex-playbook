@@ -1,6 +1,6 @@
-# duvplex
+# duvplex playbook
 
-Home NAS / Plex media server setup.
+VPS/NAS Plex media server setup.
 - Server setup using ansible
 - Setup docker containers for all services and isolated VPN for transmission
   - ~~Plex: media server~~ ✅
@@ -10,7 +10,7 @@ Home NAS / Plex media server setup.
   - ~~Tautulli: plex usage stats~~ ✅
   - ~~Overseer: media request manager~~ ✅
   - Bazarr: subtitles tracker 🚧
-  - Rclone: remote/cloud file management 🚧
+  - Rclone: remote/cloud file management 🚧 (maybe)
 
 ## Setting up ansible
 
