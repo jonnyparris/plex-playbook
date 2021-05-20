@@ -125,7 +125,7 @@ services:
     ports:
       - 5055:5055
     volumes:
-      - ./config/overseerr:/config
+      - ./config/overseerr:/app/config
     restart: unless-stopped
   watchtower:
     image: containrrr/watchtower
