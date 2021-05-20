@@ -95,6 +95,8 @@ You might want to setup your remote IP in your [`/etc/hosts`](/etc/hosts) file (
 - Jackett           ==> http://duvcloud:9117
 - Radarr            ==> http://duvcloud:7878
 - Sonarr            ==> http://duvcloud:8989
+- Tautulli          ==> http://duvcloud:8181
+- Overseer          ==> http://duvcloud:5055
 - Plex(After setup) ==> http://duvcloud:32400/web
 
 Plex ssh tunneling, ssh like this first then the URL below will start to work, once we login in and setup stuff the normal URL above will work
