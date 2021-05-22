@@ -13,6 +13,12 @@ VPS/NAS Plex media server setup.
   - Bazarr: subtitles tracker 🚧
   - Rclone: remote/cloud file management 🚧 (maybe)
 
+## Customise this fork
+
+- find + replace `jonnyparris` with your desired user
+- find + replace `duvcloud` with your desired server hostname
+- customise your [welcome banner](assets/ssh_banner.txt) ascii art
+
 ## Setting up ansible
 
 ``` sh
