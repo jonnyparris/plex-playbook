@@ -7,6 +7,7 @@ VPS/NAS Plex media server setup.
   - ~~Sonarr: series tracker~~ ✅
   - ~~Radarr: movies tracker~~ ✅
   - ~~Jackett: torrent client api~~ ✅
+  - ~~Sabnzbd: usenet client~~ ✅
   - ~~Tautulli: plex usage stats~~ ✅
   - ~~Overseer: media request manager~~ ✅
   - Bazarr: subtitles tracker 🚧
@@ -92,6 +93,7 @@ docker-compose up -d
 You might want to setup your remote IP in your [`/etc/hosts`](/etc/hosts) file (e.g. `165.89.88.177 duvcloud`) to save having to remember a random IP address.
 
 - Transmission      ==> http://duvcloud:9091
+- Sabnzbd           ==> http://duvcloud:8080
 - Jackett           ==> http://duvcloud:9117
 - Radarr            ==> http://duvcloud:7878
 - Sonarr            ==> http://duvcloud:8989
@@ -103,10 +105,15 @@ Plex ssh tunneling, ssh like this first then the URL below will start to work, o
 ``` sh
 ssh -L32400:localhost:32400 jonnyparris@duvcloud
 ```
+then head to http://localhost:32400/web to setup Plex
 
-- Plex         ==> http://localhost:32400/web
+Similarly, you might have to tunnel on port 8080 to setup Sabnzbd.
+``` sh
+ssh -L8080:localhost:8080 jonnyparris@duvcloud
+```
+then head to http://localhost:32400/web to setup Sabnzbd
 
-## Setup dropbox uploader to backup config
+## Setup dropbox uploader to backup config (optional)
 
 https://github.com/andreafabrizi/Dropbox-Uploader
 

@@ -29,6 +29,7 @@ services:
     depends_on:
       - jackett
       - transmission
+      - sabnzbd
     restart: unless-stopped
     labels:
       - 'com.centurylinklabs.watchtower.monitor-only=true'
@@ -48,6 +49,7 @@ services:
     depends_on:
       - jackett
       - transmission
+      - sabnzbd
     restart: unless-stopped
     labels:
       - 'com.centurylinklabs.watchtower.monitor-only=true'
@@ -81,6 +83,22 @@ services:
         max-size: 10m
     ports:
       - '9091:9091'
+    restart: unless-stopped
+    labels:
+      - 'com.centurylinklabs.watchtower.monitor-only=true'
+  sabnzbd:
+    image: ghcr.io/linuxserver/sabnzbd:latest
+    container_name: sabnzbd
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Lisbon
+    volumes:
+      - ./config/sabnzbd:/config
+      - /mnt/data/downloads:/downloads
+    ports:
+      - 7070:8080
+      - 9090:9090
     restart: unless-stopped
     labels:
       - 'com.centurylinklabs.watchtower.monitor-only=true'
